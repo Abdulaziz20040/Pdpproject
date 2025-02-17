@@ -1,29 +1,29 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { ChevronLeft, ChevronRight } from "lucide-react"; // Using Lucide for icons
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import FooterDelery from "../../components/FooterDelery";
 import { useProduct } from "../../context/BasketContext";
-import { toast } from "react-toastify"; // Assuming you are using react-toastify for toasts
+import { toast } from "react-toastify";
 
 function Koleksiya_Details() {
   const [data, setData] = useState(null);
   const { id } = useParams();
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [selectedSize, setSelectedSize] = useState(null); // Track selected size
+  const [selectedSize, setSelectedSize] = useState(null);
 
   const { addToFavorite, favorite, deleteFromFavorite } = useProduct();
 
   const handleFavorite = (item) => {
     if (!selectedSize) {
-      toast.error("Олчамни танланг!"); // Show toast if no size selected
+      toast.error("Олчамни танланг!");
     } else {
       const isInFavorites = favorite.some((fav) => fav.id === item.id);
 
       if (isInFavorites) {
-        deleteFromFavorite(item.id); // Remove from favorite
+        deleteFromFavorite(item.id);
         toast.success("Удалено из корзины");
       } else {
-        addToFavorite(item, selectedSize); // Add to favorite with size
+        addToFavorite(item, selectedSize);
         toast.success("Товар добавлен в корзину");
       }
     }
@@ -44,12 +44,10 @@ function Koleksiya_Details() {
     return <div className="text-center mt-10">No images available.</div>;
   }
 
-  // Function to navigate to the next image
   const handleNext = () => {
     setCurrentIndex((prevIndex) => (prevIndex + 1) % data.img.length);
   };
 
-  // Function to navigate to the previous image
   const handlePrev = () => {
     setCurrentIndex(
       (prevIndex) => (prevIndex - 1 + data.img.length) % data.img.length
@@ -59,33 +57,28 @@ function Koleksiya_Details() {
   return (
     <div className="container mx-auto p-4">
       <div className="flex flex-col lg:flex-row gap-12 mb-[90px]">
-        {/* Left side: Image slider */}
         <div className=" relative">
-          {/* Main image */}
           <img
             src={data.img[currentIndex]}
             alt={data.name || "Product image"}
             className="w-[500px] h-[670px] object-cover rounded-lg"
           />
 
-          {/* Left navigation icon */}
           <button
             onClick={handlePrev}
-            className="absolute top-1/2 left-2 transform -translate-y-1/2 p-2 bg-white rounded-full shadow-md hover:bg-gray-100"
+            className="absolute top-[42%] left-2 transform -translate-y-1/2 p-2 bg-white rounded-full shadow-md hover:bg-gray-100"
           >
             <ChevronLeft size={24} />
           </button>
 
-          {/* Right navigation icon */}
           <button
             onClick={handleNext}
-            className="absolute top-1/2 right-2 transform -translate-y-1/2 p-2 bg-white rounded-full shadow-md hover:bg-gray-100"
+            className="absolute top-[42%] right-2 transform -translate-y-1/2 p-2 bg-white rounded-full shadow-md hover:bg-gray-100"
           >
             <ChevronRight size={24} />
           </button>
 
-          {/* Thumbnails */}
-          <div className="flex justify-center gap-2 mt-4">
+          <div className="flex justify-center gap-6 mt-4">
             {data.img.map((image, index) => (
               <img
                 key={index}
@@ -100,7 +93,6 @@ function Koleksiya_Details() {
           </div>
         </div>
 
-        {/* Right side: Product details */}
         <div className="">
           <h2 className=" text-[40px] text-[#333333] font-[300] mb-4">
             ОБРАЗ В ДЕТАЛЯХ
@@ -116,7 +108,7 @@ function Koleksiya_Details() {
               <h2 className="text-[16px] font-[500] max-w-[246px] text-[#333333] mb-4">
                 {data.desc || "Product Name"}
               </h2>
-              <div className="flex justify-center gap-5 items-center mt-5 mb-3">
+              <div className="flex justify-center gap-3 items-center mt-5 mb-3">
                 {data.size.map((sizeObj, index) => (
                   <div
                     key={index}
@@ -130,7 +122,7 @@ function Koleksiya_Details() {
                 ))}
               </div>
             </div>
-            <div className="flex items-center justify-between mb-4 gap-2">
+            <div className="flex items-center justify-between mb-4 gap-10">
               <span className="text-gray-400 line-through">
                 {data.oldPrice || ""}
               </span>
@@ -139,7 +131,7 @@ function Koleksiya_Details() {
               </span>
             </div>
             <button
-              className="w-48 bg-black text-white px-6 py-2 hover:bg-gray-800"
+              className="w-40 bg-black text-white px-6 py-2 rounded-md hover:bg-gray-800"
               onClick={() => handleFavorite(data)}
             >
               {favorite.some((item) => item.id === data.id && selectedSize)
@@ -148,7 +140,6 @@ function Koleksiya_Details() {
             </button>
           </div>
           <hr className=" mt-5 mb-5" />
-          {/* Repeat for other images/details */}
         </div>
       </div>
 

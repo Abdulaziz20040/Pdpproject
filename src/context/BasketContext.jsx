@@ -1,16 +1,13 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 
-// Context yaratish
 const ProductContext = createContext(null);
 
-// Context Provider
 const ProductContextProvider = ({ children }) => {
   const [favorite, setFavorite] = useState(() => {
     const savedFavorites = localStorage.getItem("favorites");
     return savedFavorites ? JSON.parse(savedFavorites) : [];
   });
 
-  // Mahsulotni favorites-ga qo'shish
   const addToFavorite = (product) => {
     const isProductInFavorites = favorite.some(
       (item) => item.id === product.id
@@ -22,7 +19,6 @@ const ProductContextProvider = ({ children }) => {
     }
   };
 
-  // Favouritesdan o'chirish
   const deleteFromFavorite = (productId) => {
     const updatedFavorites = favorite.filter((item) => item.id !== productId);
     setFavorite(updatedFavorites);
@@ -42,10 +38,8 @@ const ProductContextProvider = ({ children }) => {
   );
 };
 
-// Custom hook
 export const useProduct = () => {
   return useContext(ProductContext);
 };
 
-// Providerni eksport qilish
 export default ProductContextProvider;

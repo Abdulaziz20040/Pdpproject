@@ -10,10 +10,9 @@ function FilterBrend() {
     const brandName = params.get("brand");
 
     if (brandName) {
-      // Tanlangan brend bo’yicha mahsulotlarni yuklash
       fetch(`https://715c33c88529aa9a.mokky.dev/intefra?breend=${brandName}`)
         .then((response) => response.json())
-        .then((data) => setBrandProducts(data)) // Faqat mahsulotlar ro'yxatini o'qiymiz
+        .then((data) => setBrandProducts(data))
         .catch((error) =>
           console.error("Error fetching brand products:", error)
         );

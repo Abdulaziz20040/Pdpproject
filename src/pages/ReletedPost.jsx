@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
+import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import axios from "axios";
 import { Link } from "react-router-dom";
 
-function Novinki() {
+function ReletedPost() {
   const [items, setItems] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
 
@@ -33,17 +34,21 @@ function Novinki() {
   };
 
   return (
-    <div className="w-full bg-white py-8 mt-4">
-      <h2 className="text-start text-[#333333] text-[25px] font-[300] mb-2">
-        ВСЕ НОВИНКИ
-      </h2>
+    <div className="w-full bg-white py-8">
       <div className="relative flex items-center justify-center">
-        <div className="grid sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-3 xl:grid-cols-5 gap-10 mt-8">
+        <button
+          className="absolute left-2 text-2xl text-gray-500 hover:text-black"
+          onClick={handlePrev}
+        >
+          <FaChevronLeft />
+        </button>
+
+        <div className="grid sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-3 xl:grid-cols-4 gap-4 mt-8">
           {items.length > 0 &&
-            items.map((item, index) => (
+            items.slice(currentIndex, currentIndex + 4).map((item, index) => (
               <div
                 key={index}
-                className=" w-[240px] h-[376px] hover:shadow-lg hover:duration-300 hover:-translate-y-2 rounded-xl"
+                className=" w-[270px] h-[376px] hover:shadow-lg hover:duration-300 hover:-translate-y-2 rounded-xl"
               >
                 <Link to={`/detailsNovinki/${item.id}`}>
                   <img
@@ -59,9 +64,16 @@ function Novinki() {
               </div>
             ))}
         </div>
+
+        <button
+          className="absolute right-2 text-2xl text-gray-500 hover:text-black"
+          onClick={handleNext}
+        >
+          <FaChevronRight />
+        </button>
       </div>
     </div>
   );
 }
 
-export default Novinki;
+export default ReletedPost;

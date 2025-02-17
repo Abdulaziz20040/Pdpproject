@@ -5,34 +5,44 @@ import img1 from "./imgs/image13.png";
 import img2 from "./imgs/image42.png";
 import FooterDelery from "../../components/FooterDelery";
 import { useProduct } from "../../context/BasketContext";
-import { toast } from "react-toastify"; // Make sure you have the toast package imported
+import { toast } from "react-toastify";
+import Novinki from "./Novinki";
+import ReletedPost from "../ReletedPost";
 
 function Novinki_details() {
   const [data, setData] = useState(null);
   const { id } = useParams();
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [selectedSize, setSelectedSize] = useState(null);
+
+  const [selectedSize, setSelectedSize] = useState(
+    localStorage.getItem("selectedSize")
+  );
+
+  useEffect(() => {
+    localStorage.setItem("selectedSize", selectedSize);
+    console.log(`Selected size: ${selectedSize} at Novinki_details component`);
+  }, [selectedSize]);
 
   const { addToFavorite, favorite, deleteFromFavorite } = useProduct();
 
   const handleFavorite = (item) => {
     if (!selectedSize) {
-      toast.error("Олчамни танланг!"); // Show toast if no size selected
+      toast.error("Олчамни танланг!");
     } else {
       const isInFavorites = favorite.some((fav) => fav.id === item.id);
 
       if (isInFavorites) {
-        deleteFromFavorite(item.id); // Remove from favorite
+        deleteFromFavorite(item.id);
         toast.success("Удалено из корзины");
       } else {
-        addToFavorite(item, selectedSize); // Add to favorite with size
+        addToFavorite(item, selectedSize);
         toast.success("Товар добавлен в корзину");
       }
     }
   };
 
   const handleSizeChange = (size) => {
-    setSelectedSize(size); // Save selected size
+    setSelectedSize(size);
   };
 
   useEffect(() => {
@@ -71,17 +81,17 @@ function Novinki_details() {
           />
           <button
             onClick={handlePrev}
-            className="absolute top-1/3 left-2 transform -translate-y-1/2 p-2 bg-white rounded-full shadow-md hover:bg-gray-100"
+            className="absolute top-[42%] left-2 transform -translate-y-1/2 p-2 bg-white rounded-full shadow-md hover:bg-gray-100"
           >
             <ChevronLeft size={24} />
           </button>
           <button
             onClick={handleNext}
-            className="absolute top-1/3 right-2 transform -translate-y-1/2 p-2 bg-white rounded-full shadow-md hover:bg-gray-100"
+            className="absolute top-[42%] right-2 transform -translate-y-1/2 p-2 bg-white rounded-full shadow-md hover:bg-gray-100"
           >
             <ChevronRight size={24} />
           </button>
-          <div className="flex justify-center gap-2 mt-4">
+          <div className="flex justify-center gap-6 mt-4">
             {data.img.map((image, index) => (
               <img
                 key={index}
@@ -130,7 +140,7 @@ function Novinki_details() {
           </div>
           <div className="flex justify-start gap-5">
             <button
-              className="w-48 bg-black text-white px-6 py-2 hover:bg-gray-800"
+              className="w-48 bg-black text-white px-6 py-2 rounded-md hover:bg-gray-800"
               onClick={() => handleFavorite(data)}
             >
               {favorite.some((item) => item.id === data.id && selectedSize)
@@ -138,7 +148,7 @@ function Novinki_details() {
                 : "в корзину"}
             </button>
             <Link to={"/oformirovat"}>
-              <button className="w-48 bg-black text-white px-6 py-2 hover:bg-gray-800">
+              <button className="w-48 bg-black text-white px-6 rounded-md py-2 hover:bg-gray-800">
                 быстрый заказ
               </button>
             </Link>
@@ -146,7 +156,10 @@ function Novinki_details() {
           <div className="border-t-[1px] border-[#D9D9D9] mt-11 pt-10">
             <div>
               <h3 className="font-normal text-[#414141]">
-                Куртка-бомбер из замшевого ширлинга Texture...
+                Куртка-бомбер из замшевого ширлинга Texture, который имеет
+                бархатистый и матовый вид с наружной стороны. Пушистая и теплая
+                внутренняя сторона обеспечивает должную защиту для холодного
+                сезона.{" "}
               </h3>
               <p className="text-[#414141] mt-3 mb-5 font-medium">
                 Данная модель большемерит на размер.
@@ -184,29 +197,26 @@ function Novinki_details() {
               </div>
             </div>
           </div>
+          <div className="flex  items-center gap-5 mt-14 underline text-[#333333] font-normal">
+            <Link to={"/allkoleksiya"}>
+              <p className="cursor-pointer">Смотреть КОЛЛЕКЦИЯ</p>
+            </Link>
+            <Link to={"/allbrend"}>
+              <p className="cursor-pointer">Смотреть все товары бренда</p>
+            </Link>
+          </div>
         </div>
       </div>
-      <div className="flex justify-end items-center gap-5 mt-14 underline text-[#333333] font-normal">
-        <p className="cursor-pointer">Смотреть все джинсы</p>
-        <p className="cursor-pointer">Смотреть все товары бренда</p>
-        <p className="cursor-pointer">Смотреть все товары для мужчин</p>
-      </div>
-      <div className="mt-32">
+
+      <div className="mt-16">
         <div className="text-center">
-          <p className="text-[#333333] font-thin text-[40px]">
+          <p className="text-[#333333] font-thin text-[35px]">
             С ЭТИМ ТОВАРОМ ПОКУПАЮТ
           </p>
         </div>
-        <div className="flex justify-center gap-3 mt-4">{/* cards */}</div>
-        <div>
-          <div className="text-center">
-            <h3>ПОХОЖИЕ ТОВАРЫ</h3>
-          </div>
-        </div>
-        <div>
-          <div className="text-center">
-            <h3>РАНЕЕ ВЫ СМОТРЕЛИ</h3>
-          </div>
+        <div className="flex justify-center gap-3">
+          {/* cards */}
+          <ReletedPost />
         </div>
         <FooterDelery />
       </div>

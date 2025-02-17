@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import FooterDelery from "../../components/FooterDelery";
 
 function Kolleksiya() {
   const [data, setData] = useState([]);
@@ -10,7 +11,7 @@ function Kolleksiya() {
   const [brand, setBrand] = useState("");
   const [sort, setSort] = useState("popularity");
   const [brands, setBrands] = useState([]);
-  const [genders, setGenders] = useState(["male", "female"]); // Gender options
+  const [genders, setGenders] = useState(["male", "female"]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -22,7 +23,6 @@ function Kolleksiya() {
         setData(items);
         setFilteredData(items);
 
-        // Extract unique brands
         const uniqueBrands = [...new Set(items.map((item) => item.breend))];
         setBrands(uniqueBrands);
       } catch (error) {
@@ -37,31 +37,28 @@ function Kolleksiya() {
   useEffect(() => {
     let filtered = data;
 
-    // Apply gender filter
     if (gender) {
       filtered = filtered.filter((item) =>
         gender === "male" ? item.male : item.female
       );
     }
 
-    // Apply brand filter
     if (brand) filtered = filtered.filter((item) => item.breend === brand);
 
-    // Apply sorting
     if (sort === "popularity") {
-      filtered.sort((a, b) => b.popularity - a.popularity); // Example popularity sorting
+      filtered.sort((a, b) => b.popularity - a.popularity);
     } else if (sort === "priceAsc") {
       filtered.sort(
         (a, b) =>
           parseFloat(a.price.replace(/\D/g, "")) -
           parseFloat(b.price.replace(/\D/g, ""))
-      ); // Sort by price ascending
+      );
     } else if (sort === "priceDesc") {
       filtered.sort(
         (a, b) =>
           parseFloat(b.price.replace(/\D/g, "")) -
           parseFloat(a.price.replace(/\D/g, ""))
-      ); // Sort by price descending
+      );
     }
 
     setFilteredData(filtered);
@@ -77,9 +74,8 @@ function Kolleksiya() {
     <div className="bg-white py-12">
       <h1 className="text-[50px] font-[300] text-center mb-12">КОЛЛЕКЦИЯ</h1>
 
-      {/* Filters Section */}
-      <div className=" flex flex-col justify-center items-center">
-        <div className="flex items-center justify-center mb-10 space-x-4">
+      <div className=" flex flex-col  justify-center items-center">
+        <div className="flex items-center  justify-center mb-10 space-x-4">
           <select
             className="border rounded-lg p-2"
             value={gender}
@@ -117,8 +113,7 @@ function Kolleksiya() {
           <option value="priceDesc">Сортировать по цене (убыванию)</option>
         </select>
       </div>
-      {/* Collection Grid */}
-      <div className="flex items-center justify-center">
+      <div className="flex items-center justify-center pb-10">
         <div className="grid grid-cols-1 md:grid-cols-3 container gap-10 mx-auto px-6">
           {filteredData.length > 0 ? (
             filteredData.map((item) => (
@@ -149,6 +144,7 @@ function Kolleksiya() {
           )}
         </div>
       </div>
+      <FooterDelery />
     </div>
   );
 }

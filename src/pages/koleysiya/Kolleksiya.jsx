@@ -66,7 +66,7 @@ function Kolleksiya() {
 
       <Link to="/allkoleksiya">
         <div className="flex flex-col justify-center items-center gap-4 mt-20">
-          <p>СМОТРЕТЬ ВСЕ</p>
+          <p>СМОТРЕТЬ БОЛЬШЕ</p>
           <hr className="w-[200px] border-stone-500" />
         </div>
       </Link>

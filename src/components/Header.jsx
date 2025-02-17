@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import dostavka from "../img/dostavka.png";
 import korzina from "../img/korzinka.png";
@@ -10,18 +10,52 @@ function Header() {
   const [brands, setBrands] = useState([]);
   const navigate = useNavigate();
   const { favorite } = useProduct();
+  const [searchTerm, setSearchTerm] = useState("");
+  const [filteredBrands, setFilteredBrands] = useState([]);
+
+  const searchRef = useRef(null);
+  const menuRef = useRef(null);
 
   useEffect(() => {
-    // Fetch brand categories from the API
     fetch("https://715c33c88529aa9a.mokky.dev/intefra")
       .then((response) => response.json())
       .then((data) => setBrands(data || []))
       .catch((error) => console.error("Error fetching brands:", error));
   }, []);
 
+  useEffect(() => {
+    if (searchTerm) {
+      const results = brands.filter((brand) =>
+        brand.name.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+      setFilteredBrands(results);
+    } else {
+      setFilteredBrands([]);
+    }
+  }, [searchTerm, brands]);
+
+  const handleClickOutside = (e) => {
+    if (
+      searchRef.current &&
+      !searchRef.current.contains(e.target) &&
+      menuRef.current &&
+      !menuRef.current.contains(e.target)
+    ) {
+      setSearchTerm("");
+      setIsMenuOpen(false);
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener("click", handleClickOutside);
+    return () => {
+      document.removeEventListener("click", handleClickOutside);
+    };
+  }, []);
+
   const handleBrandClick = (brand) => {
-    // Tanlangan brendni URL orqali o’tkazamiz
     navigate(`/filter-brend?brand=${encodeURIComponent(brand.breend)}`);
+    setSearchTerm("");
     setIsMenuOpen(false);
   };
 
@@ -35,12 +69,34 @@ function Header() {
           <h1 className="text-2xl font-bold ml-4">INTEFRA</h1>
         </Link>
       </div>
-      <div className="flex-1 mx-4">
+      <div className="flex-1 mx-4" ref={searchRef}>
         <input
           type="text"
           placeholder="Поиск по продукции"
-          className="w-full p-2 border rounded-lg"
+          className="w-full p-2 border rounded-lg outline-none"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
         />
+
+        {filteredBrands.length > 0 && (
+          <div className="max-h-48 overflow-y-auto w-[950px] border-t mt-2 bg-white absolute shadow-lg rounded-lg">
+            {filteredBrands.map((brand) => (
+              <Link key={brand.id} to={`/detailsNovinki/${brand.id}`}>
+                <div
+                  className="flex items-center p-2 hover:bg-gray-100 cursor-pointer"
+                  onClick={() => handleBrandClick(brand)}
+                >
+                  <img
+                    src={brand.img[0]}
+                    alt={brand.name}
+                    className="w-10 h-10 mr-2"
+                  />
+                  <span>{brand.name}</span>
+                </div>
+              </Link>
+            ))}
+          </div>
+        )}
       </div>
       <div className="flex items-center space-x-4">
         <Link to="/dostavka">
@@ -62,7 +118,6 @@ function Header() {
         </Link>
       </div>
 
-      {/* Modal/Menu for Brands */}
       {isMenuOpen && (
         <div className="absolute top-full left-0 w-full bg-white shadow-lg rounded-lg p-4 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
           {brands.map((brand, index) => (

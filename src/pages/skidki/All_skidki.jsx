@@ -8,11 +8,9 @@ function All_skidki() {
   const [currentIndex, setCurrentIndex] = useState(0);
 
   useEffect(() => {
-    // Fetch data from the API
     axios
       .get("https://715c33c88529aa9a.mokky.dev/intefra")
       .then((response) => {
-        // Filter items where scidka is true
         const filterproduct = response.data.filter(
           (item) => item.scidka === true
         );
@@ -42,7 +40,6 @@ function All_skidki() {
       </h2>
 
       <div className="relative flex items-center justify-center">
-        {/* Slider Items */}
         <div className="grid sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-3 xl:grid-cols-5 gap-10 mt-8">
           {items.length > 0 &&
             items.map((item, index) => (

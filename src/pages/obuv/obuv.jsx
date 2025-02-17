@@ -2,13 +2,14 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import Ctegory from "../../components/category/Ctegory";
 
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import FooterDelery from "../../components/FooterDelery";
 
 function Obuvie() {
   const [data, setData] = useState([]);
   const [active, seInactive] = useState(false);
-  // apachi
+  const [sort, setSort] = useState("");
+
   useEffect(() => {
     axios
       .get("https://715c33c88529aa9a.mokky.dev/intefra")
@@ -18,13 +19,25 @@ function Obuvie() {
       })
       .catch((err) => console.log(err));
   }, []);
-
+  const navigate = useNavigate();
+  const handleBrandClick = (brand) => {
+    navigate(`/filter-brend?brand=${encodeURIComponent(brand.breend)}`);
+  };
   const handleActive = () => {
     seInactive(!active);
   };
   const location = useLocation();
   const maleData = location.state?.maleData || [];
   const femaleData = location.state?.femaleData || [];
+
+  const handleSort = (sortType) => {
+    if (sortType === "Сначала новинки") {
+      const sortedData = data.filter((item) => item.novinki === true);
+      setData(sortedData);
+    } else {
+      setData(data);
+    }
+  };
 
   return (
     <>
@@ -40,17 +53,25 @@ function Obuvie() {
           <ul className="flex justify-center flex-wrap gap-6 mt-4 text-[16px] text-[#333333] items-center w-full">
             {!active
               ? data.slice(0, 9).map((item) => (
-                  <li className="border-r-2 pr-2" key={item.id}>
+                  <li
+                    className="border-r-2 pr-2 cursor-pointer"
+                    key={item.id}
+                    onClick={() => handleBrandClick(item)}
+                  >
                     {item.breend}
                   </li>
                 ))
               : data.map((item) => (
-                  <li className="border-r-2 pr-2" key={item.id}>
+                  <li
+                    className="border-r-2 pr-2 cursor-pointer"
+                    key={item.id}
+                    onClick={() => handleBrandClick(item)}
+                  >
                     {item.breend}
                   </li>
                 ))}
             <li className="cursor-pointer" onClick={handleActive}>
-              и другие… ee
+              и другие…
             </li>
           </ul>
         </div>
@@ -86,12 +107,12 @@ function Obuvie() {
             </div>
             <div>
               <select
+                onChange={(e) => handleSort(e.target.value)}
                 name="categ"
                 className="bg-white w-48 border-b-[1px] border-black pb-3 outline-none"
               >
-                <option value="New">New</option>
+                <option value="Сначала">Сначала новинки</option>
                 <option value="Popular">Popular</option>
-                <option value="Price_up">Price up</option>
               </select>
             </div>
           </div>
@@ -99,26 +120,23 @@ function Obuvie() {
             {maleData && maleData.length > 0 ? (
               maleData.map((item) => (
                 <div
-                  className="hover:shadow-lg w-[300px] h-[400px] relative duration-300"
+                  className="hover:shadow-lg w-[300px] h-[430px] relative duration-300"
                   key={item.id}
                 >
-                  {/* Skidka */}
                   {item.scidka && (
                     <span className="bg-[#E53030] w-16 h-16 rounded-full text-center flex items-center justify-center text-white absolute top-4 left-56">
                       {item.skidca}
                     </span>
                   )}
-                  {/* Rasm */}
                   <div className="flex justify-center items-start mb-5">
                     <Link to={`/detailsNovinki/${item.id}`}>
                       <img
-                        src="https://s3-alpha-sig.figma.com/img/867f/8b08/6af58525fcfd386597a20f553db38923?Expires=1740355200&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=DK-6oS9lFkJQ9ExMJk13h2fpo~tNwlSyX66GZiNQ-Zg80h7PZTC3EuJF07LOL3~XFAN54SuBiKRdFGAJA0fbOyhhAX-2e212FYBtGWqMwt~5AMTtTf0T-iec37YFKJoLC5egCOniSqr1NBQgpqy0REWKOeDuKUolvSTjGrAQVklMvaUBiQED~~hK8eVZCAEmANoyGWxMq7JXSaaM-tgRSZhhb7FACj~-Bx5ICXRUo0l4nCiATHx269weqPfXlPf-c1DLQgGTdwZeOHBPsMgLEn48Y3oCOliVq-ZGvbke8y~GvDwZKUAZXPAhKk95UPuG789Glr0OVrDxVjdEXN-2Xg__"
+                        src={item.img[0]}
                         className="w-[250px] h-[200px] object-cover"
                         alt=""
                       />
                     </Link>
                   </div>
-                  {/* Matn */}
                   <div className="text-center mx-auto">
                     <h3 className="font-Montserrat leading-6 font-light">
                       <span className="block">
@@ -131,7 +149,16 @@ function Obuvie() {
 
                     <h4 className="font-bold mt-2">{item.name}</h4>
                   </div>
-                  {/* Narx */}
+                  <div className="flex justify-center gap-5 items-center mt-5 mb-3">
+                    {item.size.map((sizeObj, index) => (
+                      <div
+                        key={index}
+                        className="border-[1px] border-[#D9D9D9] p-2 w-[50px] rounded-lg text-center"
+                      >
+                        <span>{Object.values(sizeObj)}</span>
+                      </div>
+                    ))}
+                  </div>
                   <div className="flex justify-center gap-4 text-center text-[#333333] font-bold pb-10">
                     {item.scidka && (
                       <p className="text-[#969696] line-through">
@@ -152,13 +179,11 @@ function Obuvie() {
                   className="hover:shadow-lg w-[300px] h-[430px] relative"
                   key={item.id}
                 >
-                  {/* Skidka */}
                   {item.scidka && (
                     <span className="bg-[#E53030] w-16 h-16 rounded-full text-center flex items-center justify-center text-white absolute top-4 left-56">
                       {item.skidca}
                     </span>
                   )}
-                  {/* Rasm */}
                   <div className="flex justify-center items-start mb-5">
                     <Link to={`/detailsNovinki/${item.id}`}>
                       <img
@@ -168,7 +193,7 @@ function Obuvie() {
                       />
                     </Link>
                   </div>
-                  {/* Matn */}
+
                   <div className="text-center mx-auto">
                     <h3 className="font-Montserrat leading-6 font-light">
                       <span className="block">
@@ -178,7 +203,6 @@ function Obuvie() {
                         {item.desc.slice(Math.ceil(item.desc.length / 2.2))}
                       </span>
                     </h3>
-
                     <h4 className="font-bold mt-2">{item.name}</h4>
                   </div>
                   <div className="flex justify-center gap-5 items-center mt-5 mb-3">
@@ -187,11 +211,10 @@ function Obuvie() {
                         key={index}
                         className="border-[1px] border-[#D9D9D9] p-2 w-[50px] rounded-lg text-center"
                       >
-                        <span>{Object.values(sizeObj)[0]}</span>
+                        <span>{Object.values(sizeObj)}</span>
                       </div>
                     ))}
                   </div>
-                  {/* Narx */}
                   <div className="flex justify-center gap-4 text-center text-[#333333] font-bold pb-10">
                     {item.scidka && (
                       <p className="text-[#969696] line-through">

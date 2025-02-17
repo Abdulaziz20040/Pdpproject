@@ -8,11 +8,9 @@ function Novinki() {
   const [currentIndex, setCurrentIndex] = useState(0);
 
   useEffect(() => {
-    // Fetch data from the API
     axios
       .get("https://715c33c88529aa9a.mokky.dev/intefra")
       .then((response) => {
-        // Filter items where scidka is true
         const filterproduct = response.data.filter(
           (item) => item.scidka === true
         );
@@ -36,13 +34,12 @@ function Novinki() {
   };
 
   return (
-    <div className="w-full bg-white py-8">
+    <div className="w-full bg-white py-8 mt-4">
       <h2 className="text-center text-[#E53030] text-[50px] font-[300] mb-2">
         СКИДКИ{" "}
       </h2>
 
       <div className="relative flex items-center justify-center">
-        {/* Previous Button */}
         <button
           className="absolute left-2 text-2xl text-gray-500 hover:text-black"
           onClick={handlePrev}
@@ -50,8 +47,7 @@ function Novinki() {
           <FaChevronLeft />
         </button>
 
-        {/* Slider Items */}
-        <div className="grid sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-3 xl:grid-cols-4 gap-4 mt-8">
+        <div className="grid sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-3 xl:grid-cols-4 gap-4 mt-12">
           {items.length > 0 &&
             items.slice(currentIndex, currentIndex + 4).map((item, index) => (
               <div
@@ -81,7 +77,6 @@ function Novinki() {
             ))}
         </div>
 
-        {/* Next Button */}
         <button
           className="absolute right-2 text-2xl text-gray-500 hover:text-black"
           onClick={handleNext}
@@ -91,7 +86,7 @@ function Novinki() {
       </div>
 
       <Link to="/allskidki">
-        <div className="flex flex-col justify-center items-center gap-4 mt-10">
+        <div className="flex flex-col justify-center items-center gap-4 mt-14">
           <p>СМОТРЕТЬ ВСЕ</p>
           <hr className="w-[200px] border-stone-500" />
         </div>

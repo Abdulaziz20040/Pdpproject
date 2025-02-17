@@ -4,11 +4,9 @@ import img3 from "./artigiani 1.png";
 
 function Oformit_Aboout() {
   return (
-    <div className="relative w-full mb-32 h-[805px]">
-      {/* Background Image */}
-      <img src={img2} alt="" className="w-full h-full object-cover" />
+    <div className="relative w-full mb-24 pt-10 h-[600px]">
+      <img src={img2} alt="" className="w-full h-[600px] object-cover" />
 
-      {/* Content */}
       <div className="absolute inset-0 flex flex-col justify-center items-center text-center text-white">
         <img
           src={img3}

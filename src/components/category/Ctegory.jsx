@@ -10,8 +10,6 @@ function Category({ data }) {
     setShowOff(!showoff);
   };
 
-  // dsd
-
   const showColor = () => {
     setShowOn(!showon);
   };
@@ -26,43 +24,25 @@ function Category({ data }) {
             <div className="flex justify-between items-center mb-3">
               <p className="font-extralight">Все</p>
               <button className="border-[1px] w-11 p-1 rounded-lg border-[#D9D9D9] hover:border-black">
-                6
+                {data.length}
               </button>
             </div>
             <div className="flex justify-between items-center mb-3">
-              <p className="font-extralight">Ботинки</p>
+              <p className="font-extralight">НОВИНКИ</p>
               <button className="border-[1px] w-11 p-1 rounded-lg border-[#D9D9D9] hover:border-black">
-                6
+                {data.filter((item) => item.novinki === true).length}
               </button>
             </div>
             <div className="flex justify-between items-center mb-3">
-              <p className="font-extralight">Кроссовки и кеды</p>
+              <p className="font-extralight">КОЛЛЕКЦИЯ</p>
               <button className="border-[1px] w-11 p-1 rounded-lg border-[#D9D9D9] hover:border-black">
-                6
+                {data.filter((item) => item.koleksya === true).length}
               </button>
             </div>
             <div className="flex justify-between items-center mb-3">
-              <p className="font-extralight">Обувь с мехом</p>
+              <p className="font-extralight">СКИДКИ</p>
               <button className="border-[1px] w-11 p-1 rounded-lg border-[#D9D9D9] hover:border-black">
-                6
-              </button>
-            </div>
-            <div className="flex justify-between items-center mb-3">
-              <p className="font-extralight">Open-walk</p>
-              <button className="border-[1px] w-11 p-1 rounded-lg border-[#D9D9D9] hover:border-black">
-                6
-              </button>
-            </div>
-            <div className="flex justify-between items-center mb-3">
-              <p className="font-extralight">Скидки до -70%</p>
-              <button className="border-[1px] w-11 p-1 rounded-lg border-[#D9D9D9] hover:border-black">
-                6
-              </button>
-            </div>
-            <div className="flex justify-between items-center mb-3">
-              <p className="font-extralight">Летняя обуви</p>
-              <button className="border-[1px] w-11 p-1 rounded-lg border-[#D9D9D9] hover:border-black">
-                6
+                {data.filter((item) => item.scidka === true).length}
               </button>
             </div>
           </div>
@@ -81,7 +61,7 @@ function Category({ data }) {
           <motion.div
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: showoff ? "auto" : 0, opacity: showoff ? 1 : 0 }}
-            transition={{ duration: 0.5, ease: "easeInOut" }} // Yopilish va ko'rsatilish sekinlashtirildi
+            transition={{ duration: 0.5, ease: "easeInOut" }}
             className="overflow-hidden"
           >
             {showoff && (
@@ -94,70 +74,6 @@ function Category({ data }) {
                     </button>
                   </div>
                 ))}
-              </div>
-            )}
-          </motion.div>
-        </div>
-        <div className="border-b-[1px]">
-          <div className="flex justify-between items-center mt-5 p-2 pb-5">
-            <div>
-              <p className="font-medium text-[17px]">Цвет</p>
-            </div>
-            <div>
-              <button className="border-none w-6" onClick={showColor}>
-                <FaChevronDown style={{ color: "#969696", fontWeight: 100 }} />
-              </button>
-            </div>
-          </div>
-          <motion.div
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: showon ? "auto" : 0, opacity: showon ? 1 : 0 }}
-            transition={{ duration: 0.5, ease: "easeInOut" }} // Yopilish va ko'rsatilish sekinlashtirildi
-            className="overflow-hidden"
-          >
-            {showon && (
-              <div className="p-2 font-thin">
-                <div className="flex justify-between items-center mb-3">
-                  <p>бежевый</p>
-                  <button className="border-[1px] w-11 p-1 rounded-lg border-[#D9D9D9] hover:border-black">
-                    6
-                  </button>
-                </div>
-                {/*  */}
-                <div className="flex justify-between items-center mb-3">
-                  <p>белый</p>
-                  <button className="border-[1px] w-11 p-1 rounded-lg border-[#D9D9D9] hover:border-black">
-                    6
-                  </button>
-                </div>
-                {/*  */}
-                <div className="flex justify-between items-center mb-3">
-                  <p>бордовый</p>
-                  <button className="border-[1px] w-11 p-1 rounded-lg border-[#D9D9D9] hover:border-black">
-                    6
-                  </button>
-                </div>
-                {/*  */}
-                <div className="flex justify-between items-center mb-3">
-                  <p>голубой</p>
-                  <button className="border-[1px] w-11 p-1 rounded-lg border-[#D9D9D9] hover:border-black">
-                    6
-                  </button>
-                </div>
-                {/*  */}
-                <div className="flex justify-between items-center mb-3">
-                  <p>зеленый</p>
-                  <button className="border-[1px] w-11 p-1 rounded-lg border-[#D9D9D9] hover:border-black">
-                    6
-                  </button>
-                </div>
-                {/*  */}
-                <div className="flex justify-between items-center mb-3">
-                  <p>коричневый</p>
-                  <button className="border-[1px] w-11 p-1 rounded-lg border-[#D9D9D9] hover:border-black">
-                    6
-                  </button>
-                </div>
               </div>
             )}
           </motion.div>

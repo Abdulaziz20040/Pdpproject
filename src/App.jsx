@@ -29,7 +29,7 @@ const router = createBrowserRouter([
       },
       {
         path: "dostavka",
-        element: <Oformrovat />,
+        element: <Dostavka />,
       },
       {
         path: "obuv",

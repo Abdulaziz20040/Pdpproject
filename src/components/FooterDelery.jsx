@@ -5,7 +5,7 @@ import img4 from "../pages/obuv/imgs/image6.png";
 
 function FooterDelery() {
   return (
-    <div className="flex justify-between items-center border-[#D9D9D9] mb-28 h-56 border-b-[1px] border-t-[1px]">
+    <div className="flex justify-between items-center mb-10 border-[#D9D9D9] h-56 border-b-[1px] border-t-[1px]">
       <div className="border-r-[1px] w-72 h-56 flex justify-center items-center flex-col border-[#D9D9D9] border-l-[1px] text-center ">
         <div className="flex justify-center items-center">
           <img src={img1} alt="" />
